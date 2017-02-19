@@ -1,19 +1,36 @@
 #!/usr/bin/python
 # MDOSHI - Maschinendeck Door Opening SHell Improved
 
-import time, cmd, logging, sys
-from subprocess import call
+import cmd, logging, sys
+import RPi.GPIO as GPIO
+from time import sleep
+
+def pin_init():
+    # RELAY0
+    PIN_22 = 15
+    # RELAY1
+    PIN_23 = 16
+
+    GPIO.setmode(GPIO.BOARD)
+
+    GPIO.setup(PIN_22, GPIO.OUT)
+    GPIO.setup(PIN_23, GPIO.OUT)
+
+    GPIO.output(PIN_22, 1)
+    GPIO.output(PIN_23, 1)
 
 def unlock_door():
-    call(['gpio','export','23','out'])
-    time.sleep(1)
-    call(['gpio','unexport','23'])
+    pin_init()
+    GPIO.output(PIN_23, 0)
+    sleep(0.5)
+    GPIO.output(PIN_23, 1)
     logging.info("unlocked")
     
 def lock_door():
-    call(['gpio','export','22','out'])
-    time.sleep(1)
-    call(['gpio','unexport','22'])
+    pin_init()
+    GPIO.output(PIN_22, 0)
+    sleep(0.5)
+    GPIO.output(PIN_22, 1)
     logging.info("locked")
 
 class MDOSHI(cmd.Cmd):
