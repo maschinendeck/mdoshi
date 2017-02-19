@@ -5,29 +5,26 @@ import cmd, logging, sys
 import RPi.GPIO as GPIO
 from time import sleep
 
-def pin_init():
-    # RELAY0
-    PIN_22 = 15
-    # RELAY1
-    PIN_23 = 16
-
-    GPIO.setmode(GPIO.BOARD)
-
-    GPIO.setup(PIN_22, GPIO.OUT)
-    GPIO.setup(PIN_23, GPIO.OUT)
-
-    GPIO.output(PIN_22, 1)
-    GPIO.output(PIN_23, 1)
 
 def unlock_door():
-    pin_init()
+    # initialize gpio pins
+    PIN_23 = 16
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(PIN_23, GPIO.OUT)
+    
+    # unlock the door
     GPIO.output(PIN_23, 0)
     sleep(0.5)
     GPIO.output(PIN_23, 1)
     logging.info("unlocked")
     
 def lock_door():
-    pin_init()
+    # initialize gpio pins
+    PIN_22 = 15
+    GPIO.setmode(GPIO.BOARD)
+    GPIO.setup(PIN_22, GPIO.OUT)
+
+    # lock the door
     GPIO.output(PIN_22, 0)
     sleep(0.5)
     GPIO.output(PIN_22, 1)
